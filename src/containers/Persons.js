@@ -29,17 +29,21 @@ class Persons extends Component {
 
     render () {
         return (
-            <div>
-                <AddPerson personAdded={() => this.props.onStoreDeletePerson({action: actionTypes.STORE})} />
-                {this.props.persons.map(person => (
-                    <Person 
-                        key={person.id}
-                        name={person.name} 
-                        age={person.age} 
-                        clicked={() => this.props.onStoreDeletePerson({action: actionTypes.DELETE, id: person.id})}/>
-                ))}
-            </div>
-        );
+					<div>
+						<AddPerson
+							personAdded={this.props.onStorePerson}
+						/>
+						{this.props.persons.map((person) => (
+							<Person
+								key={person.id}
+								name={person.name}
+								age={person.age}
+								clicked={() =>
+									this.props.onDeletePerson(person.id)}
+							/>
+						))}
+					</div>
+				);
     }
 }
 
@@ -51,8 +55,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onStoreDeletePerson: (payload) => dispatch({type: payload}),
-    }
+			onStorePerson: (name, age) =>
+				dispatch({ type: actionTypes.STORE, payload: {name: name, age: age}}),
+            onDeletePerson: (id) => dispatch({type: actionTypes.DELETE, id: id}),
+		};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Persons);
